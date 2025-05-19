@@ -14,6 +14,9 @@ This project provides an MCP (Model Context Protocol) server for integrating wit
 - `pyproject.toml` — Project dependencies and metadata
 - `uv.lock` — Lockfile for reproducible installs (managed by [uv](https://github.com/astral-sh/uv))
 
+## Note:
+This project uses the Azure AI Projects Client Library for Python (PREVIEW) in version 1.0.0b10. There have been significant updates with the release of version 1.0.0b11, including breaking changes. Those are not yet reflected in this project. Please check the [Azure AI Projects Client Library](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-projects) for the latest information.
+
 ## Getting Started
 
 ### 1. Prerequisites
