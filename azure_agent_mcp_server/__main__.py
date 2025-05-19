@@ -48,11 +48,10 @@ def initialize_server() -> bool:
         return False
 
     try:
-        credential = DefaultAzureCredential()
+        # Initialize the Azure AI Agent client
         ai_client = AgentsClient(
-            credential=credential,
-            endpoint=project_connection_string,
-            user_agent="mcp-azure-ai-agent",
+            credential=DefaultAzureCredential(),
+            endpoint=project_connection_string
         )
     
         return True
@@ -171,7 +170,7 @@ async def sync_agents() -> dict:
         return {}
 
     try:
-        # Get current agents from the service - now returns AsyncIterable["_models.Agent"]
+        # Get current agents from the service
         agents_response = ai_client.list_agents()
         # Check if the response is valid
         current_agents = {}
