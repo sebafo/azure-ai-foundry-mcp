@@ -6,8 +6,8 @@ import logging
 import asyncio
 from dotenv import load_dotenv
 from fastmcp import FastMCP, Context
-from azure.ai.projects.aio import AIProjectClient
-from azure.ai.projects.models import MessageRole, Agent
+from azure.ai.agents.aio import AgentsClient
+from azure.ai.agents.models import Agent, MessageRole
 from azure.identity.aio import DefaultAzureCredential
 
 # Set up logging configuration
@@ -47,9 +47,9 @@ def initialize_server() -> bool:
 
     try:
         credential = DefaultAzureCredential()
-        ai_client = AIProjectClient.from_connection_string(
+        ai_client = AgentsClient(
             credential=credential,
-            conn_str=project_connection_string,
+            endpoint=project_connection_string,
             user_agent="mcp-azure-ai-agent",
         )
     
@@ -64,21 +64,21 @@ async def query_agent(agent_id: str, query: str) -> str:
     """Query an Azure AI Agent and get the response."""
     try:
         # Always create a new thread
-        thread = await ai_client.agents.create_thread()
+        thread = await ai_client.threads.create()
         thread_id = thread.id
 
         # Add message to thread
-        await ai_client.agents.create_message(
+        await ai_client.messages.create(
             thread_id=thread_id, role=MessageRole.USER, content=query
         )
 
         # Process the run asynchronously
-        run = await ai_client.agents.create_run(thread_id=thread_id, agent_id=agent_id)
+        run = await ai_client.runs.create(thread_id=thread_id, agent_id=agent_id)
 
         # Poll until the run is complete
         while run.status in ["queued", "in_progress", "requires_action"]:
             await asyncio.sleep(1)  # Non-blocking sleep
-            run = await ai_client.agents.get_run(thread_id=thread_id, run_id=run.id)
+            run = await ai_client.runs.get(thread_id=thread_id, run_id=run.id)
 
         if run.status == "failed":
             error_msg = f"Agent run failed: {run.last_error}"
@@ -86,7 +86,7 @@ async def query_agent(agent_id: str, query: str) -> str:
             return f"Error: {error_msg}"
 
         # Get the agent's response
-        response_messages = await ai_client.agents.list_messages(thread_id=thread_id)
+        response_messages = await ai_client.messages.list(thread_id=thread_id)
         response_message = response_messages.get_last_message_by_role(MessageRole.AGENT)
 
         result = ""
@@ -169,19 +169,22 @@ async def sync_agents() -> dict:
         return {}
 
     try:
-        # Get current agents from the service
-        agents_response = await ai_client.agents.list_agents()
+        # Get current agents from the service - now returns AsyncIterable["_models.Agent"]
+        agents_response = ai_client.list_agents()
+        # Check if the response is valid
         current_agents = {}
         
-        if not agents_response or not agents_response.data:
+        # Process the AsyncIterable response
+        agent_count = 0
+        async for agent in agents_response:
+            current_agents[agent.id] = agent
+            agent_count += 1
+            
+        if agent_count == 0:
             logger.warning("No agents found in the Azure AI Agent Service.")
             return current_agents
             
-        # Create a dictionary of current agents
-        for agent in agents_response.data:
-            current_agents[agent.id] = agent
-            
-        logger.info(f"Found {len(agents_response.data)} agents")
+        logger.info(f"Found {agent_count} agents")
         
         # Find agents to add (new agents) or update
         for agent_id, agent in current_agents.items():
