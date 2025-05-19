@@ -10,6 +10,8 @@ from azure.ai.agents.aio import AgentsClient
 from azure.ai.agents.models import Agent, MessageRole
 from azure.identity.aio import DefaultAzureCredential
 
+# check https://github.com/azure-ai-foundry/mcp-foundry/blob/main/src/python/azure_agent_mcp_server/__main__.py
+
 # Set up logging configuration
 logging.basicConfig(
     level=logging.WARNING,
