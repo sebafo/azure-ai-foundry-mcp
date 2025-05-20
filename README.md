@@ -50,7 +50,7 @@ The server can run in two modes:
 * **Local mode** (default):
   ```sh
   uv run -m azure_agent_mcp_server  
-  # Alteratively
+  # Alteratively, you can run:
   # python -m azure_agent_mcp_server
   ```
 
@@ -63,7 +63,7 @@ The server can run in two modes:
   ```
 
 When started, the server will:
-1. Connect to Azure AI Agent Service using the connection string
+1. Connect to Azure AI Agent Service using the provided endpoint
 2. Automatically discover all your agents
 3. Create MCP tools for each agent
 4. Periodically check for new or updated agents every 60 seconds
@@ -83,7 +83,7 @@ When started, the server will:
                     "azure_agent_mcp_server"
                 ],
                 "env": {
-                    "PROJECT_CONNECTION_STRING": "your-azureml-connection-string"
+                    "PROJECT_ENDPOINT": "your-ai-foundry-project-endpoint"
                 }
             }
         }
@@ -103,6 +103,7 @@ The MCP server can be configured using the following environment variables in yo
 - `SERVER_PORT`: Port number for web mode (default: 8000)
 - `SERVER_PATH`: Path for web mode (default: "/")
 - `UPDATE_INTERVAL`: How often (in seconds) to check for new or updated agents (default: 60)
+- `LOG_LEVEL`: Set the logging level (default: "WARNING"). Options include "DEBUG", "INFO", "WARNING", "ERROR", and "CRITICAL".
 
 Example `.env` file:
 ```env
@@ -110,6 +111,7 @@ PROJECT_ENDPOINT=your-ai-foundry-project-endpoint
 SERVER_TYPE=web
 SERVER_PORT=9000
 UPDATE_INTERVAL=120
+LOG_LEVEL=INFO
 ```
 
 **Note**: Never commit secrets to version control.
@@ -133,6 +135,3 @@ The system automatically:
 Example:
 - An agent named "Coding Guidelines" becomes a tool named `coding_guidelines`
 - An agent named "Python Expert" becomes a tool named `python_expert`
-
-## License
-MIT
