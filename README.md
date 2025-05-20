@@ -14,6 +14,10 @@ This project provides an MCP (Model Context Protocol) server for integrating wit
 - `pyproject.toml` — Project dependencies and metadata
 - `uv.lock` — Lockfile for reproducible installs (managed by [uv](https://github.com/astral-sh/uv))
 
+## Notes
+- The most recent version of the AI Foundry SDK requires an AI Foundry Project. It doesn't support a hub based project currently.
+For more information about Azure AI Foundry project types, see the [official documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/what-is-azure-ai-foundry#project-types).
+
 ## Getting Started
 
 ### 1. Prerequisites
@@ -25,7 +29,7 @@ This project provides an MCP (Model Context Protocol) server for integrating wit
 2. **Configure environment variables:**
    - Copy the provided `.env` file or create your own. Example:
      ```env
-     PROJECT_CONNECTION_STRING=your-azureml-connection-string
+     PROJECT_ENDPOINT=your-ai-foundry-project-endpoint
      ```
    - This variable is required for connecting to your Azure AI Agent Service.
 
@@ -94,7 +98,7 @@ When started, the server will:
 
 The MCP server can be configured using the following environment variables in your `.env` file:
 
-- `PROJECT_CONNECTION_STRING`: Azure AI Foundry project connection string (required)
+- `PROJECT_ENDPOINT`: Azure AI Foundry project endpoint (required)
 - `SERVER_TYPE`: Set to "local" (default) or "web" to choose the transport mode
 - `SERVER_PORT`: Port number for web mode (default: 8000)
 - `SERVER_PATH`: Path for web mode (default: "/")
@@ -102,7 +106,7 @@ The MCP server can be configured using the following environment variables in yo
 
 Example `.env` file:
 ```env
-PROJECT_CONNECTION_STRING=your-azureml-connection-string
+PROJECT_ENDPOINT=your-ai-foundry-project-endpoint
 SERVER_TYPE=web
 SERVER_PORT=9000
 UPDATE_INTERVAL=120

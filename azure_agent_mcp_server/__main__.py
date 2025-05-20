@@ -7,10 +7,8 @@ import asyncio
 from dotenv import load_dotenv
 from fastmcp import FastMCP, Context
 from azure.ai.agents.aio import AgentsClient
-from azure.ai.agents.models import Agent, MessageRole
+from azure.ai.agents.models import Agent, MessageRole, MessageTextContent, ListSortOrder
 from azure.identity.aio import DefaultAzureCredential
-
-# check https://github.com/azure-ai-foundry/mcp-foundry/blob/main/src/python/azure_agent_mcp_server/__main__.py
 
 # Set up logging configuration
 logging.basicConfig(
@@ -22,15 +20,15 @@ logger = logging.getLogger("azure_agent_mcp")
 #logger.setLevel(logging.INFO) # Set to DEBUG/INFO for detailed logs
 
 # Global variables for client and agent cache
-ai_client = None
+agents_client = None
 registered_agents = {}  # Dictionary to keep track of registered agent tools by ID
 
 def initialize_server() -> bool:
     """Initialize the Azure AI Agent client asynchronously"""
-    global ai_client, server_type, server_port, server_path, update_interval
+    global agents_client, server_type, server_port, server_path, update_interval
 
     # Load environment variables
-    project_connection_string = os.getenv("PROJECT_CONNECTION_STRING")
+    project_endpoint = os.getenv("PROJECT_ENDPOINT")
     update_interval = int(os.getenv("UPDATE_INTERVAL", 60))  # Default to 60 seconds
 
     # Check if the server type is valid
@@ -43,15 +41,15 @@ def initialize_server() -> bool:
         return False
 
     # Validate essential environment variables
-    if not project_connection_string:
+    if not project_endpoint:
         logger.error("Missing required environment variable: PROJECT_CONNECTION_STRING")
         return False
 
     try:
         # Initialize the Azure AI Agent client
-        ai_client = AgentsClient(
+        agents_client = AgentsClient(
             credential=DefaultAzureCredential(),
-            endpoint=project_connection_string
+            endpoint=project_endpoint
         )
     
         return True
@@ -65,21 +63,21 @@ async def query_agent(agent_id: str, query: str) -> str:
     """Query an Azure AI Agent and get the response."""
     try:
         # Always create a new thread
-        thread = await ai_client.threads.create()
+        thread = await agents_client.threads.create()
         thread_id = thread.id
 
         # Add message to thread
-        await ai_client.messages.create(
+        await agents_client.messages.create(
             thread_id=thread_id, role=MessageRole.USER, content=query
         )
 
         # Process the run asynchronously
-        run = await ai_client.runs.create(thread_id=thread_id, agent_id=agent_id)
+        run = await agents_client.runs.create(thread_id=thread_id, agent_id=agent_id)
 
         # Poll until the run is complete
         while run.status in ["queued", "in_progress", "requires_action"]:
             await asyncio.sleep(1)  # Non-blocking sleep
-            run = await ai_client.runs.get(thread_id=thread_id, run_id=run.id)
+            run = await agents_client.runs.get(thread_id=thread_id, run_id=run.id)
 
         if run.status == "failed":
             error_msg = f"Agent run failed: {run.last_error}"
@@ -87,8 +85,18 @@ async def query_agent(agent_id: str, query: str) -> str:
             return f"Error: {error_msg}"
 
         # Get the agent's response
-        response_messages = await ai_client.messages.list(thread_id=thread_id)
-        response_message = response_messages.get_last_message_by_role(MessageRole.AGENT)
+        messages = agents_client.messages.list(
+                thread_id=thread.id,
+                order=ListSortOrder.DESCENDING,
+            )
+        
+        async for msg in messages:
+            last_part = msg.content[-1]
+            if isinstance(last_part, MessageTextContent):
+                if msg.role == MessageRole.AGENT:
+                    response_message = msg
+                    logger.debug(f"Agent response: {last_part.text.value}")
+                    break
 
         result = ""
         citations = []
@@ -171,7 +179,7 @@ async def sync_agents() -> dict:
 
     try:
         # Get current agents from the service
-        agents_response = ai_client.list_agents()
+        agents_response = agents_client.list_agents()
         # Check if the response is valid
         current_agents = {}
         
