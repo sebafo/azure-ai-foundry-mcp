@@ -1,4 +1,4 @@
-# Azure Agent MCP
+# Azure AI Foundry Agent MCP
 
 This project provides an MCP (Model Context Protocol) server for integrating with Azure AI Agent Service. It is designed to help you interact with Azure-hosted AI agents, query them, and manage agent-related workflows in a secure and scalable way.
 
