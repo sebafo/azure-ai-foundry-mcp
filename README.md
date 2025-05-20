@@ -23,6 +23,13 @@ For more information about Azure AI Foundry project types, see the [official doc
 ### 1. Prerequisites
 - Python 3.13+
 - [uv](https://github.com/astral-sh/uv) (recommended for dependency management)
+- Azure AI Foundry project (no hub-based projects supported)
+- You get the project endpoint from the Azure AI Foundry portal. It looks like this:
+  ```
+  https://<your-ai-foundry-project-ressource>.services.ai.azure.com/api/projects/<your-ai-foundry-project-name>
+  ```
+- You can find the project endpoint in the Azure AI Foundry portal under "Overview":
+  ![AI Foundry Endpoint Location](assets/ai-foundry-endpoint.png)
 
 ### 2. Setup
 1. **Clone the repository**
