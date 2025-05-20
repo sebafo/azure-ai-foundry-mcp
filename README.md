@@ -50,7 +50,7 @@ The server can run in two modes:
 * **Local mode** (default):
   ```sh
   uv run -m azure_agent_mcp_server  
-  # Alteratively, you can run:
+  # Alternatively, you can run:
   # python -m azure_agent_mcp_server
   ```
 
