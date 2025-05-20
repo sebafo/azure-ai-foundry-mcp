@@ -66,7 +66,7 @@ When started, the server will:
 1. Connect to Azure AI Agent Service using the provided endpoint
 2. Automatically discover all your agents
 3. Create MCP tools for each agent
-4. Periodically check for new or updated agents every 60 seconds
+4. Periodically check for new or updated agents every 300 seconds
 
 ### 4. Querying Agents in VSCode / GitHub Copilot
 1. Add MCP Server to VSCode settings:
@@ -102,7 +102,7 @@ The MCP server can be configured using the following environment variables in yo
 - `SERVER_TYPE`: Set to "local" (default) or "web" to choose the transport mode
 - `SERVER_PORT`: Port number for web mode (default: 8000)
 - `SERVER_PATH`: Path for web mode (default: "/")
-- `UPDATE_INTERVAL`: How often (in seconds) to check for new or updated agents (default: 60)
+- `UPDATE_INTERVAL`: How often (in seconds) to check for new or updated agents (default: 300)
 - `LOG_LEVEL`: Set the logging level (default: "WARNING"). Options include "DEBUG", "INFO", "WARNING", "ERROR", and "CRITICAL".
 
 Example `.env` file:
