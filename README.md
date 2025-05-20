@@ -101,6 +101,8 @@ When started, the server will:
 
 3. You can then use these tools directly in GitHub Copilot or any other MCP-compatible client.
 
+4. **Good to know:** Create a copilot-instructions.md file in the .github directory in your project to instruct copilot to streamline the usage of the MCP tools. For more information about repository custom instructions, see the [GitHub documentation](https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot#repository-custom-instructions-example).
+
 ## Environment Variables and Configuration
 
 The MCP server can be configured using the following environment variables in your `.env` file:
