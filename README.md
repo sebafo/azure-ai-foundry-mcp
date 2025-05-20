@@ -142,3 +142,6 @@ The system automatically:
 Example:
 - An agent named "Coding Guidelines" becomes a tool named `coding_guidelines`
 - An agent named "Python Expert" becomes a tool named `python_expert`
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
