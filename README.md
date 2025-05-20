@@ -14,8 +14,9 @@ This project provides an MCP (Model Context Protocol) server for integrating wit
 - `pyproject.toml` — Project dependencies and metadata
 - `uv.lock` — Lockfile for reproducible installs (managed by [uv](https://github.com/astral-sh/uv))
 
-## Note:
-This project uses the Azure AI Projects Client Library for Python (PREVIEW) in version 1.0.0b10. There have been significant updates with the release of version 1.0.0b11, including breaking changes. Those are not yet reflected in this project. Please check the [Azure AI Projects Client Library](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-projects) for the latest information.
+## Notes
+- The most recent version of the AI Foundry SDK requires an AI Foundry Project. It doesn't support a hub based project currently.
+For more information about Azure AI Foundry project types, see the [official documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/what-is-azure-ai-foundry#project-types).
 
 ## Getting Started
 
@@ -28,7 +29,7 @@ This project uses the Azure AI Projects Client Library for Python (PREVIEW) in v
 2. **Configure environment variables:**
    - Copy the provided `.env` file or create your own. Example:
      ```env
-     PROJECT_CONNECTION_STRING=your-azureml-connection-string
+     PROJECT_ENDPOINT=your-ai-foundry-project-endpoint
      ```
    - This variable is required for connecting to your Azure AI Agent Service.
 
@@ -49,7 +50,7 @@ The server can run in two modes:
 * **Local mode** (default):
   ```sh
   uv run -m azure_agent_mcp_server  
-  # Alteratively
+  # Alternatively, you can run:
   # python -m azure_agent_mcp_server
   ```
 
@@ -62,7 +63,7 @@ The server can run in two modes:
   ```
 
 When started, the server will:
-1. Connect to Azure AI Agent Service using the connection string
+1. Connect to Azure AI Agent Service using the provided endpoint
 2. Automatically discover all your agents
 3. Create MCP tools for each agent
 4. Periodically check for new or updated agents every 60 seconds
@@ -82,7 +83,7 @@ When started, the server will:
                     "azure_agent_mcp_server"
                 ],
                 "env": {
-                    "PROJECT_CONNECTION_STRING": "your-azureml-connection-string"
+                    "PROJECT_ENDPOINT": "your-ai-foundry-project-endpoint"
                 }
             }
         }
@@ -97,18 +98,20 @@ When started, the server will:
 
 The MCP server can be configured using the following environment variables in your `.env` file:
 
-- `PROJECT_CONNECTION_STRING`: Azure AI Foundry project connection string (required)
+- `PROJECT_ENDPOINT`: Azure AI Foundry project endpoint (required)
 - `SERVER_TYPE`: Set to "local" (default) or "web" to choose the transport mode
 - `SERVER_PORT`: Port number for web mode (default: 8000)
 - `SERVER_PATH`: Path for web mode (default: "/")
 - `UPDATE_INTERVAL`: How often (in seconds) to check for new or updated agents (default: 60)
+- `LOG_LEVEL`: Set the logging level (default: "WARNING"). Options include "DEBUG", "INFO", "WARNING", "ERROR", and "CRITICAL".
 
 Example `.env` file:
 ```env
-PROJECT_CONNECTION_STRING=your-azureml-connection-string
+PROJECT_ENDPOINT=your-ai-foundry-project-endpoint
 SERVER_TYPE=web
 SERVER_PORT=9000
 UPDATE_INTERVAL=120
+LOG_LEVEL=INFO
 ```
 
 **Note**: Never commit secrets to version control.
@@ -132,6 +135,3 @@ The system automatically:
 Example:
 - An agent named "Coding Guidelines" becomes a tool named `coding_guidelines`
 - An agent named "Python Expert" becomes a tool named `python_expert`
-
-## License
-MIT
