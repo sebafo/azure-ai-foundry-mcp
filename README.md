@@ -47,7 +47,7 @@ For more information about Azure AI Foundry project types, see the [official doc
      ```
    - Or, to sync with the lockfile:
      ```sh
-     uv pip sync
+     uv sync
      ```
    - Alternatively, you can use `pip` or `pipx` if you prefer.
 
