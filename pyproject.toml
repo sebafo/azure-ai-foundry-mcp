@@ -1,7 +1,7 @@
 [project]
 name = "azure-agent-mcp"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "A Model Context Protocol (MCP) server that integrates with Azure AI Foundry Agent Service, providing automatic discovery and dynamic registration of AI agents as MCP tools. This enables seamless interaction with Azure-hosted AI agents through standardized interfaces, supporting both local and web transport modes with regular background synchronization."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
