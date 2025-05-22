@@ -104,7 +104,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.11.18" },
     { name = "azure-ai-projects", specifier = "==1.0.0b11" },
     { name = "azure-identity", specifier = ">=1.22.0" },
-    { name = "fastmcp", specifier = ">=2.3.4" },
+    { name = "fastmcp", specifier = ">=2.3.5" },
     { name = "python-dotenv", specifier = ">=1.1.0" },
 ]
 
@@ -303,7 +303,7 @@ wheels = [
 
 [[package]]
 name = "fastmcp"
-version = "2.3.4"
+version = "2.3.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "exceptiongroup" },
@@ -315,9 +315,9 @@ dependencies = [
     { name = "typer" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/75/d9/cc3eb61c59fec834a9492ea21df134381b4be76c35faa18cd2b0249278b8/fastmcp-2.3.4.tar.gz", hash = "sha256:f3fe004b8735b365a65ec2547eeb47db8352d5613697254854bc7c9c3c360eea", size = 998315, upload-time = "2025-05-15T00:54:51.399Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/61/30/1a70fce24dd0c9f7e7e2168adad1eb2c126e918128594a7bba06093b9263/fastmcp-2.3.5.tar.gz", hash = "sha256:09e11723c6588d8c13562d5eb04d42b13b91eb32f53cef77cc8c0ee121b2f907", size = 1004996, upload-time = "2025-05-20T14:53:10.422Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/e6/310d1fe6708b7338e1f48915a13d8bf00fd0599acdc7bf98da4fd20fcb66/fastmcp-2.3.4-py3-none-any.whl", hash = "sha256:12a45f72dd95aeaa1a6a56281fff96ca46929def3ccd9f9eb125cb97b722fbab", size = 96393, upload-time = "2025-05-15T00:54:49.714Z" },
+    { url = "https://files.pythonhosted.org/packages/d6/0f/098a4c7891d8c6adb69fc4f421e879bed73a352b3c3562b6a0be989b29bd/fastmcp-2.3.5-py3-none-any.whl", hash = "sha256:193e35a8d35a5c6a4af07e764873d8592aadc2f1e32dd8827b57869a83956088", size = 97240, upload-time = "2025-05-20T14:53:09.32Z" },
 ]
 
 [[package]]

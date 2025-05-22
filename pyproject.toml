@@ -8,6 +8,6 @@ dependencies = [
     "aiohttp>=3.11.18",
     "azure-ai-projects==1.0.0b11",
     "azure-identity>=1.22.0",
-    "fastmcp>=2.3.4",
+    "fastmcp>=2.3.5",
     "python-dotenv>=1.1.0",
 ]
